@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Custom Text Bar-->
+    <declare-styleable name="TextBar">
+        <attr name="textBarSizeSp" format="dimension"/>
+        <attr name="textBarMarginsDp" format="dimension"/>
+        <attr name="textBarColumns" format="integer"/>
+        <attr name="textBarColorChecked" format="color" />
+        <attr name="textBarColorUnchecked" format="color" />
+        <attr name="textBarColorStroke" format="color" />
+    </declare-styleable>
+</resources>
