@@ -5,7 +5,8 @@
 
 A simple text choice for your e-commerce store client. Written in Kotlin.
 
-`minSdkVersion 16`
+ - `minSdkVersion 16`
+ - AndroidX
 
 ![Text Bar in Action (picture).](https://res.cloudinary.com/ddhl2pupw/image/upload/v1571757921/library-textbar/Screenshot_1.png)
 
