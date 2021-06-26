@@ -160,17 +160,6 @@ class TextBar : TableLayout, ITextBar {
                 child.toggleChecked(data.isChecked)
             }
         }
-
-        /*
-                    val idx = dataList.indexOf(textData)
-                    for (i in dataList.indices) {
-                        if (i != idx) {
-                            dataList[i].isChecked = false
-                            viewList[i].setChecked(false)
-                        }
-                    }
-         */
-
         // emit
         _valueFlow.value = data
     }
