@@ -60,7 +60,7 @@ class TextRectangle : FrameLayout {
     /**
      * Create an instance programmatically
      */
-    @Suppress("LongParameterList")
+    @Suppress("LongParameterList", "MagicNumber")
     constructor(
         context: Context,
         data: TextRectangleData,
