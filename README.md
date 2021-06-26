@@ -3,7 +3,7 @@
 
 # Text Bar Selector
 
-A simple text choice for your e-commerce store client. Written in Kotlin.
+A simple text choice for your e-commerce store client. Written in Kotlin + coroutines.
 
  - `minSdkVersion 16`
  - AndroidX
@@ -52,38 +52,25 @@ A simple text choice for your e-commerce store client. Written in Kotlin.
 ## Kotlin example
 
     val texts = listOf(
-                TextRectangleData("S", true),
-                TextRectangleData("L"),
-                TextRectangleData("XL"),
-                TextRectangleData("XXL"),
-                TextRectangleData("39")
-            )
-    textBarDemo.drawTextBar(texts) { data -> Log.d(TAG, "onClickEvent. data = $data") }
+        TextRectangleData(text = "S", tag = 111),
+        TextRectangleData(text = "L", isChecked = true, tag = 222),
+        TextRectangleData(text = "XL", tag = 333),
+        TextRectangleData(text = "XXL", tag = 444),
+        TextRectangleData(text = "39", tag = 555)
+    )
+    val textBarDemo = findViewById<TextBar>(R.id.textBarDemo)
+    textBarDemo.setupTextBar(texts)
+
+    // NOTE. GlobalScope is used here only as an example app.
+    GlobalScope.launch(Dispatchers.Main) {
+        textBarDemo.valueFlow.collect { data ->
+            if (data != TextBar.NULL_INITIAL_DATA) {
+                Log.d(TAG, "collect = $data")
+                log.text = "${data.text}, ${data.isChecked}, ${data.tag}"
+            }
+        }
+    }
 
 # See also
 
 [A simple color choice for your e-commerce store client.](https://github.com/tim4dev/colorbar)    
-
-# License
-
-The MIT License
-
-Copyright (c) 2019 tim4dev https://www.tim4.dev
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.

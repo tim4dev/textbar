@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2019, 2021 https://www.tim4.dev
+ * Copyright (c) 2021 https://www.tim4.dev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,30 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package dev.tim4.textbar
 
-buildscript {
-    ext.kotlin_version = '1.5.20'
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
+import dev.tim4.textbar.internal.TextRectangleData
+import kotlinx.coroutines.flow.StateFlow
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+interface ITextBar {
+    val valueFlow: StateFlow<TextRectangleData>
+    fun setupTextBar(dataList: List<TextRectangleData>)
 }

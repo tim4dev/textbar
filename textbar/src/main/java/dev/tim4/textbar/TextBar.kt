@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2019 https://www.tim4.dev
+ * Copyright (c) 2019, 2021 https://www.tim4.dev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -31,8 +31,13 @@ import dev.tim4.textbar.internal.TextRectangle
 import dev.tim4.textbar.internal.TextRectangleData
 import dev.tim4.textbar.internal.dpToPx
 import dev.tim4.textbar.internal.spToPx
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class TextBar : TableLayout {
+class TextBar : TableLayout, ITextBar {
+
+    private val _valueFlow = MutableStateFlow(NULL_INITIAL_DATA)
+    override val valueFlow: StateFlow<TextRectangleData> = _valueFlow
 
     private var textSizePx: Int = 0
     private var marginsPx: Int = 0
@@ -42,73 +47,74 @@ class TextBar : TableLayout {
     private var colorUnchecked: Int = 0
     private var colorStroke: Int = 0
 
-    //original data
-    var dataList: List<TextRectangleData> = ArrayList()
-    //result checked data
-    private var viewList: MutableList<TextRectangle> = ArrayList()
-
+    private var childs: MutableList<TextRectangle> = ArrayList()
 
 
     constructor(context: Context) : super(context) {
         initView(null)
     }
 
-    constructor(context: Context, _attrs: AttributeSet) : super(context, _attrs) {
-        initView(_attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        initView(attrs)
     }
 
     private fun initView(attrs: AttributeSet?) {
         View.inflate(context, R.layout.custom_text_bar, this)
 
         val typedArray = context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.TextBar,
-                0, 0)
+            attrs,
+            R.styleable.TextBar,
+            0, 0
+        )
 
-        textSizePx = typedArray.getDimensionPixelSize(R.styleable.TextBar_textBarSizeSp, TEXT_SIZE_DEFAULT_DP.spToPx)
-        marginsPx = typedArray.getDimensionPixelSize(R.styleable.TextBar_textBarMarginsDp, MARGINS_DEFAULT_DP.dpToPx)
-        columns = typedArray.getInteger(R.styleable.TextBar_textBarColumns,
+        textSizePx = typedArray.getDimensionPixelSize(
+            R.styleable.TextBar_textBarSizeSp,
+            TEXT_SIZE_DEFAULT_DP.spToPx
+        )
+        marginsPx = typedArray.getDimensionPixelSize(
+            R.styleable.TextBar_textBarMarginsDp,
+            MARGINS_DEFAULT_DP.dpToPx
+        )
+        columns = typedArray.getInteger(
+            R.styleable.TextBar_textBarColumns,
             COLUMNS_COUNT_DEFAULT
         )
         colorChecked = typedArray.getColor(R.styleable.TextBar_textBarColorChecked, Color.GREEN)
-        colorUnchecked = typedArray.getColor(R.styleable.TextBar_textBarColorUnchecked, Color.TRANSPARENT)
+        colorUnchecked =
+            typedArray.getColor(R.styleable.TextBar_textBarColorUnchecked, Color.TRANSPARENT)
         colorStroke = typedArray.getColor(R.styleable.TextBar_textBarColorStroke, Color.GRAY)
 
-        if (dataList.isEmpty()) stub()
-
         typedArray.recycle()
+
+        if (isInEditMode) stub()
     }
 
     private fun stub() {
         val row = TableRow(context)
-        for (i in 0..4) {
+        for (i in 0 until COLUMNS_COUNT_DEFAULT) {
             val textView = TextRectangle(
                 context,
-                TextRectangleData("t$i"),
+                TextRectangleData(text = "t$i", isChecked = (i == 0)),
                 textSizePx,
                 marginsPx,
                 colorChecked,
                 colorUnchecked,
                 colorStroke
-            ) { /* nothing */ }
+            )
             row.addView(textView)
         }
         addView(row)
     }
 
-    fun drawTextBar(_dataList: List<TextRectangleData>,
-                    _onClickListener: (TextRectangleData) -> Unit = {} // external callback
-    ) {
+    override fun setupTextBar(dataList: List<TextRectangleData>) {
         this.removeAllViews()
 
-        this.dataList = _dataList
-        this.viewList = ArrayList(_dataList.size)
+        childs = ArrayList(dataList.size)
 
         var countCols = 0
 
         var row = TableRow(context)
-        for (data in _dataList) {
-
+        dataList.forEach { data ->
             // create text rectangle
             val textView =
                 TextRectangle(
@@ -119,21 +125,12 @@ class TextBar : TableLayout {
                     colorChecked,
                     colorUnchecked,
                     colorStroke
-                ) { textData ->
-                    // radio button behavior
-                    val idx = dataList.indexOf(textData)
-                    for (i in dataList.indices) {
-                        if (i != idx) {
-                            dataList[i].isChecked = false
-                            viewList[i].setChecked(false)
-                        }
-                    }
-
-                    // call external callback
-                    _onClickListener.invoke(textData)
+                ) { view, data1 ->
+                    // onClick
+                    emitValue(view, data1)
                 }
 
-            viewList.add(textView)
+            childs.add(textView)
 
             row.addView(textView)
 
@@ -145,28 +142,43 @@ class TextBar : TableLayout {
                 row = TableRow(context)
                 countCols = 0
             }
-        }
 
+            // emit first/initial value
+            if (data.isChecked) {
+                emitValue(textView, data)
+            }
+        }
         addView(row)
     }
 
-    /**
-     * Validate.
-     * @return true if selected
-     */
-    override fun isSelected(): Boolean {
-        var result = false
-        for (data in dataList) {
-            if (data.isChecked) {
-                result = true
-                break
+    private fun emitValue(view: TextRectangle, data: TextRectangleData) {
+        // radio button behavior
+        childs.forEach { child ->
+            if (child != view) {
+                child.toggleChecked(false)
+            } else {
+                child.toggleChecked(data.isChecked)
             }
         }
-        return result
+
+        /*
+                    val idx = dataList.indexOf(textData)
+                    for (i in dataList.indices) {
+                        if (i != idx) {
+                            dataList[i].isChecked = false
+                            viewList[i].setChecked(false)
+                        }
+                    }
+         */
+
+        // emit
+        _valueFlow.value = data
     }
 
     companion object {
-        private const val COLUMNS_COUNT_DEFAULT = 5
+        val NULL_INITIAL_DATA = TextRectangleData("")
+
+        private const val COLUMNS_COUNT_DEFAULT = 3
         private const val TEXT_SIZE_DEFAULT_DP = 20
         private const val MARGINS_DEFAULT_DP = 4
     }
