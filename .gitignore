@@ -38,18 +38,6 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/assetWizardSettings.xml
-.idea/dictionaries
-.idea/libraries
-.idea/caches
-.idea/kotlinc.xml
-.idea/assetWizardSettings.xml
-.idea/caches/build_file_checksums.ser
-.idea/modules.xml
-.idea/qaplug_profiles.xml
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
@@ -123,24 +111,7 @@ obj/
 # IntelliJ IDEA
 *.iws
 /out/
-.idea/caches/
-
-# User-specific configurations
-.idea/libraries/
-.idea/.name
-.idea/compiler.xml
-.idea/copyright/profiles_settings.xml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/scopes/scope_settings.xml
-.idea/vcs.xml
-.idea/jsLibraryMappings.xml
-.idea/datasources.xml
-.idea/dataSources.ids
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
+.idea/
 
 # OS-specific files
 .DS_Store
