@@ -134,6 +134,8 @@ class TextRectangle : FrameLayout {
         showChecked(isChecked)
     }
 
+    fun getData() = textData
+
     private fun showChecked(isChecked: Boolean) {
         if (isChecked) {
             textView.background = makeBackground(colorChecked, colorStroke)

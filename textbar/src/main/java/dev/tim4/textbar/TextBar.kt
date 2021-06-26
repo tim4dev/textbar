@@ -36,8 +36,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class TextBar : TableLayout, ITextBar {
 
-    private val _valueFlow = MutableStateFlow(NULL_INITIAL_DATA)
-    override val valueFlow: StateFlow<TextRectangleData> = _valueFlow
+    private lateinit var _valueFlow: MutableStateFlow<TextRectangleData>
+    override lateinit var valueFlow: StateFlow<TextRectangleData>
 
     private var textSizePx: Int = 0
     private var marginsPx: Int = 0
@@ -142,13 +142,18 @@ class TextBar : TableLayout, ITextBar {
                 row = TableRow(context)
                 countCols = 0
             }
-
-            // emit first/initial value
-            if (data.isChecked) {
-                emitValue(textView, data)
-            }
         }
         addView(row)
+
+        initStateFlow()
+    }
+
+    private fun initStateFlow() {
+        val first = childs.find {
+            it.getData().isChecked
+        } ?: childs[0]
+        _valueFlow = MutableStateFlow(first.getData())
+        valueFlow = _valueFlow
     }
 
     private fun emitValue(view: TextRectangle, data: TextRectangleData) {
@@ -165,8 +170,6 @@ class TextBar : TableLayout, ITextBar {
     }
 
     companion object {
-        val NULL_INITIAL_DATA = TextRectangleData("")
-
         private const val COLUMNS_COUNT_DEFAULT = 3
         private const val TEXT_SIZE_DEFAULT_DP = 20
         private const val MARGINS_DEFAULT_DP = 4

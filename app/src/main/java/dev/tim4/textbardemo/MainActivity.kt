@@ -55,10 +55,8 @@ class MainActivity : AppCompatActivity() {
         // NOTE. GlobalScope is used here only as an example app.
         GlobalScope.launch(Dispatchers.Main) {
             textBarDemo.valueFlow.collect { data ->
-                if (data != TextBar.NULL_INITIAL_DATA) {
-                    Log.d(TAG, "collect = $data")
-                    log.text = "${data.text}, ${data.isChecked}, ${data.tag}"
-                }
+                Log.d(TAG, "collect = $data")
+                log.text = "${data.text}, ${data.isChecked}, ${data.tag}"
             }
         }
     }
