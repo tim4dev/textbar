@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2019 https://www.tim4.dev
+ * Copyright (c) 2019, 2021 https://www.tim4.dev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -23,7 +23,8 @@ package dev.tim4.textbar.internal
 
 import java.io.Serializable
 
-data class TextRectangleData (
-        val text: String,
-        var isChecked: Boolean = false
+data class TextRectangleData(
+    val text: String,
+    val isChecked: Boolean = false,
+    val tag: Any? = null
 ) : Serializable

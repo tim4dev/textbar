@@ -1,25 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".MainActivity">
 
     <dev.tim4.textbar.TextBar
-        android:id="@+id/textBarDemo"
+        android:id="@+id/textBarDemo1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
 
         app:textBarColorChecked="#4FFF2C"
         app:textBarColorStroke="#999999"
         app:textBarColorUnchecked="#fff"
-        app:textBarColumns="7"
+        app:textBarColumns="5"
         app:textBarMarginsDp="2dp"
         app:textBarSizeSp="20sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textViewLog1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Log 1" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="?android:attr/listDivider" />
+
+    <dev.tim4.textbar.TextBar
+        android:id="@+id/textBarDemo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:textBarColorChecked="#FF0000"
+        app:textBarColorStroke="#2C2C2C"
+        app:textBarColorUnchecked="#006391"
+        app:textBarColumns="5"
+        app:textBarMarginsDp="2dp"
+        app:textBarSizeSp="20sp"
+        app:textBarTextColor="#E4E4E4" />
+
+    <TextView
+        android:id="@+id/textViewLog2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Log 2" />
+
+</LinearLayout>

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2019 https://www.tim4.dev
+ * Copyright (c) 2019, 2021 https://www.tim4.dev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -28,62 +28,83 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
 import dev.tim4.textbar.R
-import kotlinx.android.synthetic.main.custom_text_rectangle.view.*
 
 /**
  * Creates Rectangle of a specified text. Fill background color if checked.
  */
 class TextRectangle : FrameLayout {
 
-    private val mainView: View = View.inflate(context, R.layout.custom_text_rectangle, this)
+    private val layoutId: Int get() = R.layout.textbar_item_view
+
+    @Suppress("JoinDeclarationAndAssignment")
+    private val layout: View
+
+    private val textView: TextView
 
     private lateinit var textData: TextRectangleData
+
     private var textSizePx: Int = 0
     private var marginsPx: Int = 0
+    private var textColor: Int = 0
     private var colorChecked: Int = 0
     private var colorUnchecked: Int = 0
     private var colorStroke: Int = 0
-    private lateinit var onClickListener: (TextRectangleData) -> Unit // external callback
+    private lateinit var onClickListener: (TextRectangle, TextRectangleData) -> Unit
 
-
+    init {
+        layout = View.inflate(context, layoutId, this)
+        textView = findViewById(R.id.textbarTextRectangle)
+    }
 
     /**
      * Create an instance programmatically
      */
-    constructor(_context: Context,
-                _textData: TextRectangleData,
-                _textSizePx: Int,
-                _marginsPx: Int,
-                _colorChecked: Int = Color.GREEN,
-                _colorUnchecked: Int = Color.TRANSPARENT,
-                _colorStroke: Int = Color.GRAY,
-                _onClickListener: (TextRectangleData) -> Unit = {}
-    ) : super(_context) {
+    @Suppress("LongParameterList", "MagicNumber")
+    constructor(
+        context: Context,
+        data: TextRectangleData,
+        textSizePx: Int,
+        marginsPx: Int,
+        textColor: Int = Color.BLACK,
+        colorChecked: Int = Color.GREEN,
+        colorUnchecked: Int = Color.TRANSPARENT,
+        colorStroke: Int = Color.GRAY,
+        onClickListener: (TextRectangle, TextRectangleData) -> Unit = { _, _ -> }
+    ) : super(context) {
 
-        textData = _textData
-        textSizePx = _textSizePx
-        marginsPx = _marginsPx
-        colorChecked = _colorChecked
-        colorUnchecked = _colorUnchecked
-        colorStroke = _colorStroke
-        onClickListener = _onClickListener
+        this.textData = data.copy()
+        this.textSizePx = textSizePx
+        this.marginsPx = marginsPx
+        this.textColor = textColor
+        this.colorChecked = colorChecked
+        this.colorUnchecked = colorUnchecked
+        this.colorStroke = colorStroke
+        this.onClickListener = onClickListener
 
-        textRectangle.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizePx.toFloat())
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textSizePx.toFloat())
+        textView.text = textData.text
+        textView.setTextColor(textColor)
 
-        textRectangle.text = textData.text
-
-        val paddingHorizontal = textSizePx / 2
-        val paddingVertical = textSizePx / 4
-        textRectangle.setPadding(paddingHorizontal, paddingVertical, paddingHorizontal, paddingVertical)
+        val paddingHorizontal = this.textSizePx / 2
+        val paddingVertical = this.textSizePx / 4
+        textView.setPadding(
+            paddingHorizontal,
+            paddingVertical,
+            paddingHorizontal,
+            paddingVertical
+        )
 
         // onclick listener
-        mainView.setOnClickListener {
-            textData.isChecked = !textData.isChecked
-            showChecked()
-            // callback
-            onClickListener.invoke(textData)
+        layout.setOnClickListener {
+            val checked = !textData.isChecked
+            textData = textData.copy(isChecked = checked)
+            showChecked(checked)
+            this.onClickListener.invoke(this, textData)
         }
+
+        showChecked(data.isChecked)
 
         initView()
     }
@@ -97,7 +118,7 @@ class TextRectangle : FrameLayout {
     }
 
     private fun initView() {
-        showChecked()
+        // nothing
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -105,30 +126,31 @@ class TextRectangle : FrameLayout {
 
         // set margins
         if (layoutParams is MarginLayoutParams) {
-            val layoutParams = layoutParams as MarginLayoutParams
-            layoutParams.setMargins(marginsPx, marginsPx, marginsPx, marginsPx)
-            mainView.layoutParams = layoutParams
+            val mewLayoutParams = layoutParams as MarginLayoutParams
+            mewLayoutParams.setMargins(marginsPx, marginsPx, marginsPx, marginsPx)
+            layout.layoutParams = mewLayoutParams
         }
     }
 
-    private fun showChecked() {
-        if (textData.isChecked) {
-            textRectangle.background = makeBackground(colorChecked, colorStroke)
-        }
-        else {
-            textRectangle.background = makeBackground(colorUnchecked, colorStroke)
+    fun toggleChecked(isChecked: Boolean) {
+        textData = textData.copy(isChecked = isChecked)
+        showChecked(isChecked)
+    }
+
+    fun getData() = textData
+
+    private fun showChecked(isChecked: Boolean) {
+        if (isChecked) {
+            textView.background = makeBackground(colorChecked, colorStroke)
+        } else {
+            textView.background = makeBackground(colorUnchecked, colorStroke)
         }
     }
 
     private fun makeBackground(colorFill: Int, colorStroke: Int) = GradientDrawable().apply {
-            setColor(colorFill)
-            cornerRadius = CORNER_RADIUS_DEFAULT
-            setStroke(STROKE_WIDTH_DEFAULT, colorStroke)
-        }
-
-    fun setChecked(checked: Boolean) {
-        textData.isChecked = checked
-        showChecked()
+        setColor(colorFill)
+        cornerRadius = CORNER_RADIUS_DEFAULT
+        setStroke(STROKE_WIDTH_DEFAULT, colorStroke)
     }
 
     companion object {
