@@ -36,7 +36,7 @@ import dev.tim4.textbar.R
  */
 class TextRectangle : FrameLayout {
 
-    private val layoutId: Int get() = R.layout.custom_text_rectangle
+    private val layoutId: Int get() = R.layout.textbar_item_view
 
     @Suppress("JoinDeclarationAndAssignment")
     private val layout: View
@@ -47,6 +47,7 @@ class TextRectangle : FrameLayout {
 
     private var textSizePx: Int = 0
     private var marginsPx: Int = 0
+    private var textColor: Int = 0
     private var colorChecked: Int = 0
     private var colorUnchecked: Int = 0
     private var colorStroke: Int = 0
@@ -66,6 +67,7 @@ class TextRectangle : FrameLayout {
         data: TextRectangleData,
         textSizePx: Int,
         marginsPx: Int,
+        textColor: Int = Color.BLACK,
         colorChecked: Int = Color.GREEN,
         colorUnchecked: Int = Color.TRANSPARENT,
         colorStroke: Int = Color.GRAY,
@@ -75,14 +77,15 @@ class TextRectangle : FrameLayout {
         this.textData = data.copy()
         this.textSizePx = textSizePx
         this.marginsPx = marginsPx
+        this.textColor = textColor
         this.colorChecked = colorChecked
         this.colorUnchecked = colorUnchecked
         this.colorStroke = colorStroke
         this.onClickListener = onClickListener
 
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textSizePx.toFloat())
-
         textView.text = textData.text
+        textView.setTextColor(textColor)
 
         val paddingHorizontal = this.textSizePx / 2
         val paddingVertical = this.textSizePx / 4

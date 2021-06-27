@@ -67,6 +67,12 @@ class MainActivity : AppCompatActivity() {
             TextRectangleData(text = "text 1", tag = "tag_1"),
             TextRectangleData(text = "text 2", isChecked = true, tag = "tag_2"),
             TextRectangleData(text = "text 3", tag = "tag_3"),
+            TextRectangleData(text = "text 4", tag = "tag_4"),
+            TextRectangleData(text = "text any 5", tag = "tag_5"),
+            TextRectangleData(text = "text 6", tag = "tag_6"),
+            TextRectangleData(text = "text long 7", tag = "tag_7"),
+            TextRectangleData(text = "text 8", tag = "tag_8"),
+            TextRectangleData(text = "text 9", tag = "tag_9")
         )
         textBarDemo2.setupTextBar(texts2)
 

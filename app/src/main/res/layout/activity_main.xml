@@ -16,7 +16,7 @@
         app:textBarColorChecked="#4FFF2C"
         app:textBarColorStroke="#999999"
         app:textBarColorUnchecked="#fff"
-        app:textBarColumns="7"
+        app:textBarColumns="5"
         app:textBarMarginsDp="2dp"
         app:textBarSizeSp="20sp" />
 
@@ -39,12 +39,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:textBarColorChecked="#FFA7A7"
+        app:textBarColorChecked="#FF0000"
         app:textBarColorStroke="#2C2C2C"
-        app:textBarColorUnchecked="#D9F3FF"
-        app:textBarColumns="7"
+        app:textBarColorUnchecked="#006391"
+        app:textBarColumns="5"
         app:textBarMarginsDp="2dp"
-        app:textBarSizeSp="20sp" />
+        app:textBarSizeSp="20sp"
+        app:textBarTextColor="#E4E4E4" />
 
     <TextView
         android:id="@+id/textViewLog2"

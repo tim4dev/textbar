@@ -41,7 +41,8 @@ A simple text choice for your e-commerce store client. Written in Kotlin + corou
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-    
+
+            app:textBarTextColor="#650000"
             app:textBarColorChecked="#4FFF2C"
             app:textBarColorStroke="#999999"
             app:textBarColorUnchecked="#fff"

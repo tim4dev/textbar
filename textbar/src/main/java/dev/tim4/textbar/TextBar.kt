@@ -27,6 +27,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.TableLayout
 import android.widget.TableRow
+import androidx.core.content.withStyledAttributes
 import dev.tim4.textbar.internal.TextRectangle
 import dev.tim4.textbar.internal.TextRectangleData
 import dev.tim4.textbar.internal.dpToPx
@@ -36,6 +37,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 class TextBar : TableLayout, ITextBar {
 
+    private val layoutId: Int get() = R.layout.textbar_layout
+
     private lateinit var _valueFlow: MutableStateFlow<TextRectangleData>
     override lateinit var valueFlow: StateFlow<TextRectangleData>
 
@@ -43,63 +46,64 @@ class TextBar : TableLayout, ITextBar {
     private var marginsPx: Int = 0
     private var columns: Int = 0
 
+    private var textColor: Int = 0
     private var colorChecked: Int = 0
     private var colorUnchecked: Int = 0
     private var colorStroke: Int = 0
 
     private var childs: MutableList<TextRectangle> = ArrayList()
 
+    init {
+        View.inflate(context, layoutId, this)
+    }
 
     constructor(context: Context) : super(context) {
-        initView(null)
+        initLayout(context, null)
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        initView(attrs)
+        initLayout(context, attrs)
     }
 
-    private fun initView(attrs: AttributeSet?) {
-        View.inflate(context, R.layout.custom_text_bar, this)
-
-        val typedArray = context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.TextBar,
-            0, 0
-        )
-
-        textSizePx = typedArray.getDimensionPixelSize(
-            R.styleable.TextBar_textBarSizeSp,
-            TEXT_SIZE_DEFAULT_DP.spToPx
-        )
-        marginsPx = typedArray.getDimensionPixelSize(
-            R.styleable.TextBar_textBarMarginsDp,
-            MARGINS_DEFAULT_DP.dpToPx
-        )
-        columns = typedArray.getInteger(
-            R.styleable.TextBar_textBarColumns,
-            COLUMNS_COUNT_DEFAULT
-        )
-        colorChecked = typedArray.getColor(R.styleable.TextBar_textBarColorChecked, Color.GREEN)
-        colorUnchecked =
-            typedArray.getColor(R.styleable.TextBar_textBarColorUnchecked, Color.TRANSPARENT)
-        colorStroke = typedArray.getColor(R.styleable.TextBar_textBarColorStroke, Color.GRAY)
-
-        typedArray.recycle()
+    private fun initLayout(context: Context, attrs: AttributeSet?) {
+        context.withStyledAttributes(attrs, R.styleable.TextBar) {
+            textSizePx = getDimensionPixelSize(
+                R.styleable.TextBar_textBarSizeSp,
+                TEXT_SIZE_DEFAULT_DP.spToPx
+            )
+            marginsPx = getDimensionPixelSize(
+                R.styleable.TextBar_textBarMarginsDp,
+                MARGINS_DEFAULT_DP.dpToPx
+            )
+            columns = getInteger(
+                R.styleable.TextBar_textBarColumns,
+                1
+            )
+            textColor = getColor(R.styleable.TextBar_textBarTextColor, Color.BLACK)
+            colorChecked = getColor(R.styleable.TextBar_textBarColorChecked, Color.GREEN)
+            colorUnchecked =
+                getColor(R.styleable.TextBar_textBarColorUnchecked, Color.TRANSPARENT)
+            colorStroke = getColor(R.styleable.TextBar_textBarColorStroke, Color.GRAY)
+        }
 
         if (isInEditMode) stub()
     }
 
     private fun stub() {
         val row = TableRow(context)
-        for (i in 0 until COLUMNS_COUNT_DEFAULT) {
+        for (i in 0 until columns) {
             val textView = TextRectangle(
-                context,
-                TextRectangleData(text = "t$i", isChecked = (i == 0)),
-                textSizePx,
-                marginsPx,
-                colorChecked,
-                colorUnchecked,
-                colorStroke
+                context = context,
+                data = TextRectangleData(
+                    text = "t$i",
+                    isChecked = (i == 0)
+                ),
+                textSizePx = textSizePx,
+                marginsPx = marginsPx,
+                textColor = textColor,
+                colorChecked = colorChecked,
+                colorUnchecked = colorUnchecked,
+                colorStroke = colorStroke
             )
             row.addView(textView)
         }
@@ -118,13 +122,14 @@ class TextBar : TableLayout, ITextBar {
             // create text rectangle
             val textView =
                 TextRectangle(
-                    context,
-                    data,
-                    textSizePx,
-                    marginsPx,
-                    colorChecked,
-                    colorUnchecked,
-                    colorStroke
+                    context = context,
+                    data = data,
+                    textSizePx = textSizePx,
+                    marginsPx = marginsPx,
+                    textColor = textColor,
+                    colorChecked = colorChecked,
+                    colorUnchecked = colorUnchecked,
+                    colorStroke = colorStroke
                 ) { view, data1 ->
                     // onClick
                     emitValue(view, data1)
@@ -170,7 +175,6 @@ class TextBar : TableLayout, ITextBar {
     }
 
     companion object {
-        private const val COLUMNS_COUNT_DEFAULT = 3
         private const val TEXT_SIZE_DEFAULT_DP = 20
         private const val MARGINS_DEFAULT_DP = 4
     }

@@ -5,6 +5,7 @@
         <attr name="textBarSizeSp" format="dimension"/>
         <attr name="textBarMarginsDp" format="dimension"/>
         <attr name="textBarColumns" format="integer"/>
+        <attr name="textBarTextColor" format="color" />
         <attr name="textBarColorChecked" format="color" />
         <attr name="textBarColorUnchecked" format="color" />
         <attr name="textBarColorStroke" format="color" />
