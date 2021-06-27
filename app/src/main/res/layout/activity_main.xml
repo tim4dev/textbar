@@ -42,9 +42,9 @@
         app:textBarColorChecked="#FF0000"
         app:textBarColorStroke="#2C2C2C"
         app:textBarColorUnchecked="#006391"
-        app:textBarColumns="5"
+        app:textBarColumns="3"
         app:textBarMarginsDp="2dp"
-        app:textBarSizeSp="20sp"
+        app:textBarSizeSp="22sp"
         app:textBarTextColor="#E4E4E4" />
 
     <TextView
