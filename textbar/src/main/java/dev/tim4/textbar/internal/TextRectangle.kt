@@ -43,7 +43,7 @@ class TextRectangle : FrameLayout {
 
     private val textView: TextView
 
-    private lateinit var textData: TextRectangleData
+    private lateinit var data: TextRectangleData
 
     private var textSizePx: Int = 0
     private var marginsPx: Int = 0
@@ -51,7 +51,6 @@ class TextRectangle : FrameLayout {
     private var colorChecked: Int = 0
     private var colorUnchecked: Int = 0
     private var colorStroke: Int = 0
-    private lateinit var onClickListener: (TextRectangle, TextRectangleData) -> Unit
 
     init {
         layout = View.inflate(context, layoutId, this)
@@ -74,17 +73,16 @@ class TextRectangle : FrameLayout {
         onClickListener: (TextRectangle, TextRectangleData) -> Unit = { _, _ -> }
     ) : super(context) {
 
-        this.textData = data.copy()
+        this.data = data.copy()
         this.textSizePx = textSizePx
         this.marginsPx = marginsPx
         this.textColor = textColor
         this.colorChecked = colorChecked
         this.colorUnchecked = colorUnchecked
         this.colorStroke = colorStroke
-        this.onClickListener = onClickListener
 
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textSizePx.toFloat())
-        textView.text = textData.text
+        textView.text = this.data.text
         textView.setTextColor(textColor)
 
         val paddingHorizontal = this.textSizePx / 2
@@ -98,10 +96,10 @@ class TextRectangle : FrameLayout {
 
         // onclick listener
         layout.setOnClickListener {
-            val checked = !textData.isChecked
-            textData = textData.copy(isChecked = checked)
+            val checked = !this.data.isChecked
+            this.data = this.data.copy(isChecked = checked)
             showChecked(checked)
-            this.onClickListener.invoke(this, textData)
+            onClickListener.invoke(this, this.data)
         }
 
         showChecked(data.isChecked)
@@ -133,11 +131,11 @@ class TextRectangle : FrameLayout {
     }
 
     fun toggleChecked(isChecked: Boolean) {
-        textData = textData.copy(isChecked = isChecked)
+        data = data.copy(isChecked = isChecked)
         showChecked(isChecked)
     }
 
-    fun getData() = textData
+    fun getData() = data
 
     private fun showChecked(isChecked: Boolean) {
         if (isChecked) {

@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         val texts2 = listOf(
             TextRectangleData(text = "text 1", tag = "tag_1"),
-            TextRectangleData(text = "text 2", isChecked = true, tag = "tag_2"),
+            TextRectangleData(text = "text 2", tag = "tag_2"),
             TextRectangleData(text = "text 3", tag = "tag_3"),
             TextRectangleData(text = "text 4", tag = "tag_4"),
             TextRectangleData(text = "text any 5", tag = "tag_5"),
