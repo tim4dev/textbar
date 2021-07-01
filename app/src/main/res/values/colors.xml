@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="tb_unchecked_1">#FFFFFF</color>
+    <color name="tb_checked_1">#4FFF2C</color>
+
+    <color name="tb_unchecked_2">#006391</color>
+    <color name="tb_checked_2">#FF0000</color>
 </resources>

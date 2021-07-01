@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2019, 2021 https://www.tim4.dev
+ * Copyright (c) 2021 https://www.tim4.dev
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
  * and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,30 +19,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package dev.tim4.textbardemo
 
-buildscript {
-    ext.kotlin_version = '1.5.20'
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
+import com.kaspersky.kaspresso.screens.KScreen
+import io.github.kakaocup.kakao.common.views.KView
+import io.github.kakaocup.kakao.text.KTextView
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
-    }
-}
+object MainScreen : KScreen<MainScreen>() {
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    override val layoutId: Int = R.layout.activity_main
+    override val viewClass: Class<*> = MainActivity::class.java
+
+    val textBar1 = KView { withId(R.id.textBarDemo1) }
+    val log1 = KTextView { withId(R.id.textViewLog1) }
+
+    val textBar2 = KView { withId(R.id.textBarDemo2) }
+    val log2 = KTextView { withId(R.id.textViewLog2) }
 }

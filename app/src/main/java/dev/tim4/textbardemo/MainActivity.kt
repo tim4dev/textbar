@@ -46,14 +46,7 @@ class MainActivity : AppCompatActivity() {
         val log1 = findViewById<TextView>(R.id.textViewLog1)
         val log2 = findViewById<TextView>(R.id.textViewLog2)
 
-        val texts1 = listOf(
-            TextRectangleData(text = "S", tag = 111),
-            TextRectangleData(text = "L", isChecked = true, tag = 222),
-            TextRectangleData(text = "XL", tag = 333),
-            TextRectangleData(text = "XXL", tag = 444),
-            TextRectangleData(text = "39", tag = 555)
-        )
-        textBarDemo1.setupTextBar(texts1)
+        textBarDemo1.setupTextBar(TEXTS_1)
 
         // NOTE. GlobalScope is used here only as an example app.
         GlobalScope.launch(Dispatchers.Main) {
@@ -63,18 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val texts2 = listOf(
-            TextRectangleData(text = "text 1", tag = "tag_1"),
-            TextRectangleData(text = "text 2", tag = "tag_2"),
-            TextRectangleData(text = "text 3", tag = "tag_3"),
-            TextRectangleData(text = "text 4", tag = "tag_4"),
-            TextRectangleData(text = "text any 5", tag = "tag_5"),
-            TextRectangleData(text = "text 6", tag = "tag_6"),
-            TextRectangleData(text = "text long 7", tag = "tag_7"),
-            TextRectangleData(text = "text 8", tag = "tag_8"),
-            TextRectangleData(text = "text 9", tag = "tag_9")
-        )
-        textBarDemo2.setupTextBar(texts2)
+        textBarDemo2.setupTextBar(TEXTS_2)
 
         // NOTE. GlobalScope is used here only as an example app.
         GlobalScope.launch(Dispatchers.Main) {
@@ -87,5 +69,25 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "MainActivity"
+
+        val TEXTS_1 = listOf(
+            TextRectangleData(text = "S", tag = 111),
+            TextRectangleData(text = "L", isChecked = true, tag = 222),
+            TextRectangleData(text = "XL", tag = 333),
+            TextRectangleData(text = "XXL", tag = 444),
+            TextRectangleData(text = "39", tag = 555)
+        )
+
+        val TEXTS_2 = listOf(
+            TextRectangleData(text = "text 1", tag = "tag_1"),
+            TextRectangleData(text = "text 2", tag = "tag_2"),
+            TextRectangleData(text = "text 3", tag = "tag_3"),
+            TextRectangleData(text = "text 4", tag = "tag_4"),
+            TextRectangleData(text = "text any 5", tag = "tag_5"),
+            TextRectangleData(text = "text 6", tag = "tag_6"),
+            TextRectangleData(text = "text long 7", tag = "tag_7"),
+            TextRectangleData(text = "text 8", tag = "tag_8"),
+            TextRectangleData(text = "text 9", tag = "tag_9")
+        )
     }
 }
