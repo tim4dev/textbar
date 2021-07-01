@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:textBarColorChecked="#4FFF2C"
+        app:textBarColorChecked="@color/tb_checked_1"
         app:textBarColorStroke="#999999"
-        app:textBarColorUnchecked="#fff"
+        app:textBarColorUnchecked="@color/tb_unchecked_1"
         app:textBarColumns="5"
         app:textBarMarginsDp="2dp"
         app:textBarSizeSp="20sp" />
@@ -39,9 +39,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:textBarColorChecked="#FF0000"
+        app:textBarColorChecked="@color/tb_checked_2"
         app:textBarColorStroke="#2C2C2C"
-        app:textBarColorUnchecked="#006391"
+        app:textBarColorUnchecked="@color/tb_unchecked_2"
         app:textBarColumns="3"
         app:textBarMarginsDp="2dp"
         app:textBarSizeSp="22sp"
